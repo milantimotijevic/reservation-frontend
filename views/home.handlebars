@@ -1,0 +1,48 @@
+<h1>This is HTML</h1>
+<p id="api-host">{{apiHost}}</p>
+
+<button id="reload">Reload</button>
+<p>Reservations:</p>
+<ul id="reservations"></ul>
+<br><br>
+
+<input type="text" id="guest" placeholder="guest"/><br>
+<input type="text" id="hotel" placeholder="hotel"/><br>
+<button id="create-reservation">Create Reservation</button>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const reservationsList = document.getElementById('reservations');
+    const reload = document.getElementById('reload');
+    const API_HOST = document.getElementById('api-host').innerText;
+
+    reload.addEventListener('click', () => {
+        while (reservationsList.firstChild) {
+            reservationsList.removeChild(reservationsList.firstChild);
+        }
+
+        axios.get(`${API_HOST}/reservation`).then(function(resp) {
+            const reservations = resp.data;
+            reservations.forEach(reservation => {
+                const li = document.createElement('li');
+                li.appendChild(document.createTextNode(`${reservation.guestName} / ${reservation.hotelName}`));
+                reservationsList.appendChild(li);
+            });
+        });
+    });
+
+    const guest = document.getElementById('guest');
+    const hotel = document.getElementById('hotel');
+    const createReservation = document.getElementById('create-reservation');
+
+    createReservation.addEventListener('click', () => {
+        const reservation = {
+            guestName: guest.value,
+            hotelName: hotel.value,
+            startDate: new Date(),
+            endDate: new Date()
+        };
+
+        axios.post(`${API_HOST}/reservation`, reservation);
+    });
+
+</script>

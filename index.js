@@ -1,6 +1,16 @@
-const express = require('express')
-const app = express()
+require('dotenv/config');
+const express = require('express');
+const app = express();
 
-app.use(express.static('public'));
+const handlebars = require('express3-handlebars')
+	.create({defaultLayout:'main'});
+app.engine('handlebars',handlebars.engine);
+app.set('view engine','handlebars');
 
-app.listen(3001)
+app.get('/',(req,res)=>{
+	res.render('home');
+});
+
+app.locals.apiHost = process.env.API_HOST;
+
+app.listen(3001);
