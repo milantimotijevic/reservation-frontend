@@ -1,11 +1,18 @@
 const reservationsList = document.getElementById('reservations');
+const reload = document.getElementById('reload');
 
-axios.get('http://localhost:3000/reservation').then(function(resp) {
-	const reservations = resp.data;
-	reservations.forEach(reservation => {
-		const li = document.createElement('li');
-		li.appendChild(document.createTextNode(`${reservation.guestName} / ${reservation.hotelName}`));
-		reservationsList.appendChild(li);
+reload.addEventListener('click', () => {
+	while (reservationsList.firstChild) {
+		reservationsList.removeChild(reservationsList.firstChild);
+	}
+
+	axios.get('http://localhost:3000/reservation').then(function(resp) {
+		const reservations = resp.data;
+		reservations.forEach(reservation => {
+			const li = document.createElement('li');
+			li.appendChild(document.createTextNode(`${reservation.guestName} / ${reservation.hotelName}`));
+			reservationsList.appendChild(li);
+		});
 	});
 });
 
