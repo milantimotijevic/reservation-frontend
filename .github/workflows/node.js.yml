@@ -20,7 +20,7 @@ jobs:
     - run: npm install
     - run: npm test
     - name: Build and Push Docker Image
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
         name: milantimotijevic89/reservation-frontend
         username: ${{ secrets.DOCKER_USERNAME }}
